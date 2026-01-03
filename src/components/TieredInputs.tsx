@@ -106,6 +106,9 @@ export default function TieredInputs({
                         <span>Hours Saved Weekly</span>
                         <span className="slider-value">{generalStaffHours} hrs</span>
                     </div>
+                    <p className="slider-sublabel" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                        Less manual reporting, admin tasks
+                    </p>
                     <input
                         type="range"
                         min="1"
@@ -166,6 +169,9 @@ export default function TieredInputs({
                         <span>Hours Saved Weekly</span>
                         <span className="slider-value">{specialistHours} hrs</span>
                     </div>
+                    <p className="slider-sublabel" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                        Fewer inspection loops, faster analysis
+                    </p>
                     <input
                         type="range"
                         min="1"
@@ -221,7 +227,7 @@ export default function TieredInputs({
                         <span className="slider-value error">{errorRate}%</span>
                     </div>
                     <p className="slider-sublabel" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        Higher errors = higher potential savings when eliminated.
+                        Reduced rework & "firefighting"
                     </p>
                     <input
                         type="range"

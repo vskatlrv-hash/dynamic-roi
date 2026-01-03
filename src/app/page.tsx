@@ -153,6 +153,8 @@ export default function Home() {
     // Contingency reserve
     const contingencyReserve = totalOpEx * (contingencyPercent / 100);
 
+    const riskPremium = jCurveDisruptionCost + contingencyReserve;
+
     // ===========================================
     // VALUE CAPTURE RATE APPLICATION (CFO AUDIT FIX)
     // "Hours Saved" → How much actually converts to P&L?
@@ -240,6 +242,7 @@ export default function Home() {
       // Risk
       jCurveDisruptionCost,
       contingencyReserve,
+      riskPremium,
 
       // MEVA vs Net Savings (CFO AUDIT: separated)
       grossBenefitTheoretical, // MEVA basis (strategic)
@@ -282,6 +285,8 @@ export default function Home() {
 
   return (
     <div className="main-container">
+      {/* (Banner moved to main content) */}
+
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo-container">
@@ -405,6 +410,13 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="main-content">
+        {/* Purpose Statement Banner (Sales Engineering Context) */}
+        <div className="purpose-banner">
+          <span className="purpose-icon">🎯</span>
+          <span className="purpose-text">
+            This tool is designed to support <strong>pre-sales discussions</strong> by translating technical improvements into conservative, <strong>CFO-aligned business impact scenarios</strong>.
+          </span>
+        </div>
         <header className="header">
           <h1>Industrial Value Realization Model</h1>
           <p>Manufacturing-grade ROI with Theory of Constraints, COPQ, and Risk Adjustment</p>
@@ -482,11 +494,30 @@ export default function Home() {
           cloudscaleCost={calculations.totalInvestment}
         />
 
+        {/* Sales Engineering Value Summary */}
+        <div className="card sales-summary-card">
+          <h4 className="sales-summary-title">What this means for your team</h4>
+          <div className="sales-summary-grid">
+            <div className="sales-summary-item">
+              <span className="sales-summary-icon">⚡</span>
+              <span>Faster decision cycles for engineers</span>
+            </div>
+            <div className="sales-summary-item">
+              <span className="sales-summary-icon">📉</span>
+              <span>Fewer quality escalations</span>
+            </div>
+            <div className="sales-summary-item">
+              <span className="sales-summary-icon">💼</span>
+              <span>Predictable financial impact for finance</span>
+            </div>
+          </div>
+        </div>
+
         {/* MEVA Formula */}
         <div className="card methodology-card">
           <div className="methodology-header">
-            <h3 className="section-title">MEVA: Manufacturing Economic Value Added</h3>
-            <span className="badge-research">Industrial Value Realization Model</span>
+            <h3 className="section-title">Net Economic Impact (Risk-Adjusted)</h3>
+            <span className="badge-research">Based on Industrial Value Realization Model</span>
           </div>
 
           <div className="methodology-content">
@@ -498,7 +529,7 @@ export default function Home() {
               <div className="meva-item positive">
                 <span className="meva-label">Δ Throughput</span>
                 <span className="meva-value">+${Math.round(calculations.grossBenefitTheoretical).toLocaleString()}</span>
-                <span className="meva-note">Bottleneck-adjusted value creation</span>
+                <span className="meva-note">Derived from cycle-time reduction and bottleneck relief</span>
               </div>
               <div className="meva-item negative">
                 <span className="meva-label">Δ OpEx + CapEx</span>
@@ -506,9 +537,9 @@ export default function Home() {
                 <span className="meva-note">Subscription + Amortized hardware</span>
               </div>
               <div className="meva-item negative">
-                <span className="meva-label">Risk Premium</span>
-                <span className="meva-value">-${Math.round(calculations.jCurveDisruptionCost + calculations.contingencyReserve).toLocaleString()}</span>
-                <span className="meva-note">J-Curve + Contingency</span>
+                <span className="meva-label">Δ COPQ & Risks</span>
+                <span className="meva-value">-${Math.round(calculations.copqReduction + calculations.riskPremium).toLocaleString()}</span>
+                <span className="meva-note">Based on reduced rework, inspection, and customer-facing incidents</span>
               </div>
               <div className="meva-total">
                 <span className="meva-label">Net MEVA</span>

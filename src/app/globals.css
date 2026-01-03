@@ -56,7 +56,7 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -316,6 +316,7 @@ input[type="range"]::-moz-range-track {
 .sidebar {
   position: sticky;
   top: 1rem;
+  align-self: start;
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
   padding-right: 0.5rem;
@@ -2194,4 +2195,81 @@ input[type="range"]::-moz-range-track {
 
 .slider-value.aggressive {
   color: var(--error);
+}
+
+/* ============================================
+   SALES ENGINEERING CONTEXT UI
+   ============================================ */
+
+.purpose-banner {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.purpose-icon {
+  font-size: 1.5rem;
+}
+
+.purpose-text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.purpose-text strong {
+  color: var(--accent-primary);
+}
+
+.sales-summary-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
+  border-color: rgba(99, 102, 241, 0.2);
+  margin: 2rem 0;
+}
+
+.sales-summary-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.sales-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.sales-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-sm);
+  gap: 0.5rem;
+}
+
+.sales-summary-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.sales-summary-item span:last-child {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .sales-summary-grid {
+    grid-template-columns: 1fr;
+  }
 }

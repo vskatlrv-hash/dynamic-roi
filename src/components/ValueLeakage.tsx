@@ -32,7 +32,7 @@ export default function ValueLeakage({
         <div className="card value-leakage-card">
             <div className="value-leakage-header">
                 <span className="value-leakage-icon">🕳️</span>
-                <h4>Value Leakage Analysis</h4>
+                <h4>Value Realization & Risk</h4>
                 <span className="value-leakage-badge">Identified vs. Captured</span>
             </div>
 
@@ -92,41 +92,40 @@ export default function ValueLeakage({
                 </div>
             </div>
 
-            {/* Survivor Bias Warning */}
+            {/* Survivor Bias Warning -> Adoption Variability */}
             <div className="survivor-bias-section">
                 <div className="survivor-bias-header">
-                    <span className="survivor-icon">⚠️</span>
-                    <h5>Survivor Bias Warning</h5>
+                    <span className="survivor-icon">📊</span>
+                    <h5>Adoption Variability</h5>
                 </div>
                 <p className="survivor-description">
-                    The "5,000% ROI" case studies are drawn from survivors who navigated the J-Curve valley.
-                    Many projects are abandoned during Year 1-2.
+                    Not all projects maximize value. Best-in-class teams navigate the "J-Curve" valley successfully.
                 </p>
                 <div className="survivor-stats">
                     <div className="survivor-stat fail">
                         <span className="survivor-stat-value">{survivorBiasRate}%</span>
-                        <span className="survivor-stat-label">Fail in Valley</span>
+                        <span className="survivor-stat-label">Challenged</span>
                     </div>
                     <div className="survivor-stat survive">
                         <span className="survivor-stat-value">{100 - survivorBiasRate}%</span>
-                        <span className="survivor-stat-label">Reach Year 3+</span>
+                        <span className="survivor-stat-label">Optimized</span>
                     </div>
                 </div>
             </div>
 
-            {/* Data Quality Impact */}
+            {/* Data Quality Impact -> Readiness */}
             <div className="data-quality-section">
                 <div className="data-quality-header">
-                    <span className="data-icon">📊</span>
-                    <h5>Data Quality Crisis</h5>
-                    <span className="data-cost">~$3T/year (US Economy)</span>
+                    <span className="data-icon">📋</span>
+                    <h5>Data Readiness / Maturity</h5>
+                    <span className="data-cost">Impact on Automation</span>
                 </div>
                 <p className="data-description">
-                    "Garbage In, Garbage Out." Bad sensor data multiplies errors at machine speed.
+                    Consistent data is a prerequisite for automation. Inconsistent data may require a readiness plan.
                 </p>
                 <div className="data-quality-meter">
                     <div className="meter-label">
-                        <span>Data Quality Score</span>
+                        <span>Data Maturity Score</span>
                         <span className={`meter-value ${dataQualityScore >= 80 ? 'good' : dataQualityScore >= 60 ? 'warning' : 'bad'}`}>
                             {dataQualityScore}%
                         </span>
@@ -138,15 +137,14 @@ export default function ValueLeakage({
                         ></div>
                     </div>
                     <div className="meter-labels">
-                        <span>Swamp</span>
-                        <span>Lake</span>
-                        <span>Clean</span>
+                        <span>Initiating</span>
+                        <span>Developing</span>
+                        <span>Optimized</span>
                     </div>
                 </div>
                 {dataQualityScore < 70 && (
                     <div className="data-warning">
-                        <strong>⚠️ Warning:</strong> Low data quality amplifies COPQ. AI recommendations on dirty data
-                        can accelerate scrap production.
+                        <strong>ℹ️ Note:</strong> Lower data maturity may require a phased deployment to ensure reliability.
                     </div>
                 )}
             </div>
