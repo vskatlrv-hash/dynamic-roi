@@ -325,8 +325,8 @@ export default function Home() {
             <h4>Value Capture Rate</h4>
           </div>
           <p className="value-capture-description">
-            "Hours Saved" → 실제 P&L 전환율은?<br />
-            <small>(CFO 질문: 그 시간으로 사람을 줄였나?)</small>
+            "Hours Saved" → What % actually converts to P&L?<br />
+            <small>(CFO Question: Did you reduce headcount with that time?)</small>
           </p>
           <div className="slider-group">
             <div className="slider-header">
@@ -344,7 +344,7 @@ export default function Home() {
               onChange={(e) => setValueCaptureRate(Number(e.target.value))}
             />
             <div className="range-labels">
-              <span>30% (보수적)</span>
+              <span>30% (Conservative)</span>
               <span>70%+</span>
             </div>
           </div>
