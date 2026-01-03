@@ -1,55 +1,123 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import InputSliders from '@/components/InputSliders';
-import ResultsDisplay from '@/components/ResultsDisplay';
+import TieredInputs from '@/components/TieredInputs';
+import AdvancedResults from '@/components/AdvancedResults';
 import ROIChart from '@/components/ROIChart';
 import PDFButton from '@/components/PDFButton';
 
 export default function Home() {
-  // Input state
-  const [employees, setEmployees] = useState(50);
-  const [hourlyWage, setHourlyWage] = useState(35);
-  const [hoursPerWeek, setHoursPerWeek] = useState(10);
+  // Tier 1: General Staff (default 80%)
+  const [generalStaffCount, setGeneralStaffCount] = useState(40);
+  const [generalStaffWage, setGeneralStaffWage] = useState(35); // Fully loaded cost
+  const [generalStaffHours, setGeneralStaffHours] = useState(8);
+
+  // Tier 2: Specialists (default 20%)
+  const [specialistCount, setSpecialistCount] = useState(10);
+  const [specialistWage, setSpecialistWage] = useState(125); // Fully loaded cost
+  const [specialistHours, setSpecialistHours] = useState(12);
+
+  // Efficiency Mode
+  const [efficiencyMode, setEfficiencyMode] = useState<'conservative' | 'moderate' | 'aggressive'>('moderate');
+
+  // Error Rate
   const [errorRate, setErrorRate] = useState(5);
 
-  // Calculate ROI metrics
+  // Utility Factors (from strategic analysis)
+  const UTILITY_GENERAL = 0.5;  // Time saved is cost avoidance
+  const UTILITY_SPECIALIST = 1.2; // Time saved creates opportunity value
+
+  // Efficiency Factors
+  const EFFICIENCY_FACTORS = {
+    conservative: 0.50,
+    moderate: 0.75,
+    aggressive: 1.00,
+  };
+
+  // Calculate ROI metrics using the Tiered Weighted Model
   const calculations = useMemo(() => {
-    // Annual Cost of Manual Work = Employees × Wage × Hours × 52 weeks
-    const annualCost = employees * hourlyWage * hoursPerWeek * 52;
+    const efficiencyFactor = EFFICIENCY_FACTORS[efficiencyMode];
+    const totalEmployees = generalStaffCount + specialistCount;
 
-    // Cost of Errors = Annual Cost × Error Rate
-    const errorCost = annualCost * (errorRate / 100);
+    // Weighted Benefit Formula:
+    // Total Benefit = Σ(Ni × Ci × ΔT × Ui × E)
+    // Where: N=count, C=cost, ΔT=time saved (annual), U=utility, E=efficiency
 
-    // Total Current Waste = Annual Cost + Cost of Errors
-    const totalWaste = annualCost + errorCost;
+    // General Staff Annual Benefit
+    // Hours saved per year = weekly hours × 52
+    const generalStaffAnnualHours = generalStaffHours * 52;
+    const generalStaffBenefit =
+      generalStaffCount * generalStaffWage * generalStaffAnnualHours * UTILITY_GENERAL * efficiencyFactor;
 
-    // CloudScale Cost = $10,000 (Base) + ($50 × Employees)
-    const cloudscaleCost = 10000 + (50 * employees);
+    // Specialist Annual Benefit
+    const specialistAnnualHours = specialistHours * 52;
+    const specialistBenefit =
+      specialistCount * specialistWage * specialistAnnualHours * UTILITY_SPECIALIST * efficiencyFactor;
 
-    // Savings = Total Waste - CloudScale Cost
-    const savings = totalWaste - cloudscaleCost;
+    // Total Time-Based Benefit
+    const totalBenefit = generalStaffBenefit + specialistBenefit;
 
-    // ROI = (Total Current Waste - CloudScale Cost) / CloudScale Cost × 100
-    const roi = ((totalWaste - cloudscaleCost) / cloudscaleCost) * 100;
+    // Error Reduction Savings (applied to total labor cost)
+    const totalAnnualLaborCost =
+      (generalStaffCount * generalStaffWage * generalStaffAnnualHours) +
+      (specialistCount * specialistWage * specialistAnnualHours);
+    const errorReductionSavings = totalAnnualLaborCost * (errorRate / 100) * efficiencyFactor;
 
-    // 3-Year projections (5% annual inflation on current costs)
-    const currentSpendYear1 = totalWaste;
-    const currentSpendYear2 = totalWaste * 1.05;
-    const currentSpendYear3 = totalWaste * 1.10;
+    // CloudScale Investment = $10,000 base + $50 per employee
+    const cloudscaleCost = 10000 + (50 * totalEmployees);
+
+    // Net Savings
+    const netSavings = (totalBenefit + errorReductionSavings) - cloudscaleCost;
+
+    // ROI Calculation for different efficiency scenarios
+    const calculateROI = (efficiency: number) => {
+      const generalBenefitAdj = generalStaffCount * generalStaffWage * generalStaffAnnualHours * UTILITY_GENERAL * efficiency;
+      const specialistBenefitAdj = specialistCount * specialistWage * specialistAnnualHours * UTILITY_SPECIALIST * efficiency;
+      const errorBenefitAdj = totalAnnualLaborCost * (errorRate / 100) * efficiency;
+      const totalBenefitAdj = generalBenefitAdj + specialistBenefitAdj + errorBenefitAdj;
+      return ((totalBenefitAdj - cloudscaleCost) / cloudscaleCost) * 100;
+    };
+
+    const roiConservative = calculateROI(0.50);
+    const roiModerate = calculateROI(0.75);
+    const roiAggressive = calculateROI(1.00);
+    const currentRoi = calculateROI(efficiencyFactor);
+
+    // Payback Period (in months)
+    // Monthly Net Savings = (Monthly Benefit - Monthly Subscription)
+    const monthlyBenefit = (totalBenefit + errorReductionSavings) / 12;
+    const monthlySubscription = cloudscaleCost / 12;
+    const monthlyNetSavings = monthlyBenefit - monthlySubscription;
+    const paybackMonths = monthlyNetSavings > 0 ? cloudscaleCost / (monthlyNetSavings * 12) * 12 : Infinity;
+
+    // 3-Year projections with 5% annual cost inflation
+    const currentAnnualSpend = totalAnnualLaborCost + (totalAnnualLaborCost * (errorRate / 100));
+    const currentSpendYear1 = currentAnnualSpend;
+    const currentSpendYear2 = currentAnnualSpend * 1.05;
+    const currentSpendYear3 = currentAnnualSpend * 1.10;
 
     return {
-      annualCost,
-      errorCost,
-      totalWaste,
+      generalStaffBenefit,
+      specialistBenefit,
+      totalBenefit,
+      errorReductionSavings,
       cloudscaleCost,
-      savings,
-      roi,
+      netSavings,
+      roiConservative,
+      roiModerate,
+      roiAggressive,
+      currentRoi,
+      paybackMonths,
       currentSpendYear1,
       currentSpendYear2,
       currentSpendYear3,
+      totalEmployees,
     };
-  }, [employees, hourlyWage, hoursPerWeek, errorRate]);
+  }, [
+    generalStaffCount, generalStaffWage, generalStaffHours,
+    specialistCount, specialistWage, specialistHours,
+    efficiencyMode, errorRate
+  ]);
 
   return (
     <div className="main-container">
@@ -62,36 +130,50 @@ export default function Home() {
           </div>
         </div>
 
-        <InputSliders
-          employees={employees}
-          setEmployees={setEmployees}
-          hourlyWage={hourlyWage}
-          setHourlyWage={setHourlyWage}
-          hoursPerWeek={hoursPerWeek}
-          setHoursPerWeek={setHoursPerWeek}
+        <TieredInputs
+          generalStaffCount={generalStaffCount}
+          setGeneralStaffCount={setGeneralStaffCount}
+          generalStaffWage={generalStaffWage}
+          setGeneralStaffWage={setGeneralStaffWage}
+          generalStaffHours={generalStaffHours}
+          setGeneralStaffHours={setGeneralStaffHours}
+          specialistCount={specialistCount}
+          setSpecialistCount={setSpecialistCount}
+          specialistWage={specialistWage}
+          setSpecialistWage={setSpecialistWage}
+          specialistHours={specialistHours}
+          setSpecialistHours={setSpecialistHours}
+          efficiencyMode={efficiencyMode}
+          setEfficiencyMode={setEfficiencyMode}
           errorRate={errorRate}
           setErrorRate={setErrorRate}
         />
 
         <div style={{ marginTop: '1.5rem' }}>
-          <PDFButton roi={calculations.roi} savings={calculations.savings} />
+          <PDFButton roi={calculations.currentRoi} savings={calculations.netSavings} />
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="main-content">
         <header className="header">
-          <h1>ROI Calculator</h1>
-          <p>See how much you can save with CloudScale workflow automation</p>
+          <h1>Strategic ROI Calculator</h1>
+          <p>Tiered workforce analysis with Power Law distribution modeling</p>
         </header>
 
-        <ResultsDisplay
-          annualCost={calculations.annualCost}
-          errorCost={calculations.errorCost}
-          totalWaste={calculations.totalWaste}
+        <AdvancedResults
+          generalStaffBenefit={calculations.generalStaffBenefit}
+          specialistBenefit={calculations.specialistBenefit}
+          totalBenefit={calculations.totalBenefit}
+          errorReductionSavings={calculations.errorReductionSavings}
           cloudscaleCost={calculations.cloudscaleCost}
-          roi={calculations.roi}
-          savings={calculations.savings}
+          roiConservative={calculations.roiConservative}
+          roiModerate={calculations.roiModerate}
+          roiAggressive={calculations.roiAggressive}
+          currentRoi={calculations.currentRoi}
+          netSavings={calculations.netSavings}
+          paybackMonths={calculations.paybackMonths}
+          efficiencyMode={efficiencyMode}
         />
 
         <ROIChart
@@ -101,33 +183,49 @@ export default function Home() {
           cloudscaleCost={calculations.cloudscaleCost}
         />
 
-        <div className="card" style={{ padding: '1.5rem' }}>
-          <h3 className="section-title">How We Calculate Your Savings</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
-            <div style={{ padding: '1rem', background: 'var(--bg-glass)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Annual Manual Labor Cost</strong>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                Employees × Hourly Wage × Weekly Hours × 52 weeks
+        <div className="card methodology-card">
+          <h3 className="section-title">Methodology: Tiered Weighted Model</h3>
+          <div className="formula-grid">
+            <div className="formula-item">
+              <div className="formula-header">
+                <span className="formula-icon">📊</span>
+                <strong>Total Benefit</strong>
+              </div>
+              <code className="formula">Σ(Nᵢ × Cᵢ × ΔTᵢ × Uᵢ × E)</code>
+              <p className="formula-desc">
+                Where N=headcount, C=fully loaded cost, ΔT=time saved, U=utility factor, E=efficiency
               </p>
             </div>
-            <div style={{ padding: '1rem', background: 'var(--bg-glass)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>Cost of Errors</strong>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                Annual Labor Cost × Error Rate %
-              </p>
+            <div className="formula-item">
+              <div className="formula-header">
+                <span className="formula-icon">🎯</span>
+                <strong>Utility Factors</strong>
+              </div>
+              <div className="utility-breakdown">
+                <span className="utility-row"><span className="tier-badge general">Tier 1</span> U = 0.5 (cost avoidance)</span>
+                <span className="utility-row"><span className="tier-badge specialist">Tier 2</span> U = 1.2 (opportunity value)</span>
+              </div>
             </div>
-            <div style={{ padding: '1rem', background: 'var(--bg-glass)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <strong style={{ color: 'var(--accent-primary)' }}>CloudScale Cost</strong>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                $10,000 base + $50 per employee
-              </p>
+            <div className="formula-item">
+              <div className="formula-header">
+                <span className="formula-icon">💰</span>
+                <strong>Investment</strong>
+              </div>
+              <code className="formula">$10,000 + ($50 × Total Employees)</code>
             </div>
-            <div style={{ padding: '1rem', background: 'var(--bg-glass)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <strong style={{ color: 'var(--success)' }}>Your ROI</strong>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                (Total Waste - CloudScale Cost) ÷ CloudScale Cost × 100
-              </p>
+            <div className="formula-item">
+              <div className="formula-header">
+                <span className="formula-icon">📈</span>
+                <strong>ROI</strong>
+              </div>
+              <code className="formula">(Total Benefit - Investment) ÷ Investment × 100</code>
             </div>
+          </div>
+
+          <div className="methodology-note">
+            <strong>Why Tiered?</strong> Research shows knowledge worker performance follows a Power Law distribution,
+            not a Bell Curve. Simple averages underestimate specialist impact by up to 75%.
+            This model captures the disproportionate value created by your high-performers.
           </div>
         </div>
       </main>
