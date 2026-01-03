@@ -2077,3 +2077,121 @@ input[type="range"]::-moz-range-track {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ============================================
+   VIEW MODE TOGGLE (CFO vs SALES)
+   ============================================ */
+
+.view-mode-card {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.view-mode-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.view-mode-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.view-mode-icon {
+  font-size: 1.25rem;
+}
+
+.view-mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.view-mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  background: var(--bg-glass);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.view-mode-btn:hover {
+  border-color: var(--border-hover);
+}
+
+.view-mode-btn.active.cfo {
+  border-color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.view-mode-btn.active.sales {
+  border-color: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.view-mode-btn-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.view-mode-btn-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.view-mode-btn-desc {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  margin-top: 0.125rem;
+}
+
+/* ============================================
+   VALUE CAPTURE RATE
+   ============================================ */
+
+.value-capture-card {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.value-capture-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.value-capture-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.value-capture-icon {
+  font-size: 1.25rem;
+}
+
+.value-capture-description {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.value-capture-description small {
+  color: var(--accent-primary);
+  font-style: italic;
+}
+
+.slider-value.conservative {
+  color: var(--success);
+}
+
+.slider-value.aggressive {
+  color: var(--error);
+}
