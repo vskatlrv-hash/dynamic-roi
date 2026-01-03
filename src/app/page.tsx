@@ -7,6 +7,8 @@ import AdvancedResults from '@/components/AdvancedResults';
 import JCurveChart from '@/components/JCurveChart';
 import ROIChart from '@/components/ROIChart';
 import PDFButton from '@/components/PDFButton';
+import ValueLeakage from '@/components/ValueLeakage';
+import CapExOpExComparison from '@/components/CapExOpExComparison';
 
 export default function Home() {
   // =============================================
@@ -52,6 +54,12 @@ export default function Home() {
   // =============================================
   const [jCurveDip, setJCurveDip] = useState(15);
   const [contingencyPercent, setContingencyPercent] = useState(20);
+
+  // =============================================
+  // Advanced Critique: Data Quality & Survivor Bias
+  // =============================================
+  const [dataQualityScore, setDataQualityScore] = useState(65);
+  const survivorBiasRate = 40; // ~40% of projects fail in the J-Curve valley
 
   // =============================================
   // UTILITY FACTORS (from strategic analysis)
@@ -212,6 +220,12 @@ export default function Home() {
       currentSpendYear1,
       currentSpendYear2,
       currentSpendYear3,
+
+      // Value Leakage (Identified vs Captured)
+      // Value Identified = Raw theoretical benefit
+      valueIdentified: generalStaffBenefitRaw + specialistBenefitRaw + (totalCOPQ * efficiencyFactor),
+      // Value Captured = MEVA (after all deductions and constraint adjustments)
+      valueCaptured: Math.max(0, meva),
     };
   }, [
     generalStaffCount, generalStaffWage, generalStaffHours,
@@ -402,6 +416,21 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Value Leakage Analysis */}
+        <ValueLeakage
+          identifiedValue={calculations.valueIdentified}
+          capturedValue={calculations.valueCaptured}
+          survivorBiasRate={survivorBiasRate}
+          dataQualityScore={dataQualityScore}
+        />
+
+        {/* CapEx vs OpEx 10-Year TCO Comparison */}
+        <CapExOpExComparison
+          subscriptionCost={calculations.subscriptionCost}
+          integrationCost={integrationCost}
+          hardwareCapex={hardwareCapex}
+        />
       </main>
     </div>
   );

@@ -1586,3 +1586,494 @@ input[type="range"]::-moz-range-track {
 .meva-total .meva-value.negative {
   color: var(--error);
 }
+
+/* ============================================
+   VALUE LEAKAGE ANALYSIS
+   ============================================ */
+
+.value-leakage-card {
+  padding: 1.5rem;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.value-leakage-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.value-leakage-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.value-leakage-icon {
+  font-size: 1.25rem;
+}
+
+.value-leakage-badge {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 99px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.value-leakage-description {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* Value Funnel */
+.value-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.funnel-stage {
+  position: relative;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.funnel-stage.identified {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.funnel-stage.captured {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.funnel-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: var(--radius-md);
+  opacity: 0.1;
+}
+
+.funnel-stage.identified .funnel-bar {
+  background: var(--success);
+}
+
+.funnel-stage.captured .funnel-bar {
+  background: #f59e0b;
+}
+
+.funnel-content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.funnel-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.funnel-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.funnel-stage.identified .funnel-value {
+  color: var(--success);
+}
+
+.funnel-stage.captured .funnel-value {
+  color: #f59e0b;
+}
+
+.funnel-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  color: var(--error);
+}
+
+.funnel-loss {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Leakage Factors */
+.leakage-factors {
+  margin-bottom: 1.5rem;
+}
+
+.leakage-factors h5 {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.leakage-factor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.leakage-factor:last-child {
+  border-bottom: none;
+}
+
+.factor-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.factor-icon {
+  font-size: 1rem;
+}
+
+.factor-name {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.factor-impact {
+  font-size: 0.75rem;
+  color: var(--error);
+  font-weight: 500;
+}
+
+/* Survivor Bias Section */
+.survivor-bias-section {
+  padding: 1rem;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.survivor-bias-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.survivor-icon {
+  font-size: 1.25rem;
+}
+
+.survivor-bias-header h5 {
+  margin: 0;
+  color: #f59e0b;
+  font-size: 0.875rem;
+}
+
+.survivor-description {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.survivor-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.survivor-stat {
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.survivor-stat.fail {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.survivor-stat.survive {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.survivor-stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.survivor-stat.fail .survivor-stat-value {
+  color: var(--error);
+}
+
+.survivor-stat.survive .survivor-stat-value {
+  color: var(--success);
+}
+
+.survivor-stat-label {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Data Quality Section */
+.data-quality-section {
+  padding: 1rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.data-quality-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.data-icon {
+  font-size: 1.25rem;
+}
+
+.data-quality-header h5 {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.data-cost {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 99px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.data-description {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.data-quality-meter {
+  margin-bottom: 0.75rem;
+}
+
+.meter-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.meter-value {
+  font-weight: 700;
+}
+
+.meter-value.good {
+  color: var(--success);
+}
+
+.meter-value.warning {
+  color: #f59e0b;
+}
+
+.meter-value.bad {
+  color: var(--error);
+}
+
+.meter-track {
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.meter-fill.good {
+  background: var(--success);
+}
+
+.meter-fill.warning {
+  background: #f59e0b;
+}
+
+.meter-fill.bad {
+  background: var(--error);
+}
+
+.meter-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.data-warning {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.data-warning strong {
+  color: var(--error);
+}
+
+/* ============================================
+   CAPEX VS OPEX COMPARISON
+   ============================================ */
+
+.capex-opex-card {
+  padding: 1.5rem;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.capex-opex-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.capex-opex-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.capex-opex-icon {
+  font-size: 1.25rem;
+}
+
+.capex-opex-badge {
+  font-size: 0.625rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 99px;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent-primary);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.capex-opex-description {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.capex-opex-chart-container {
+  margin: 1rem 0;
+}
+
+.tco-tooltip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+}
+
+.tco-tooltip-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.tco-tooltip-capex {
+  font-size: 0.875rem;
+  color: var(--success);
+}
+
+.tco-tooltip-opex {
+  font-size: 0.875rem;
+  color: #f59e0b;
+}
+
+.capex-opex-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.tco-stat {
+  text-align: center;
+}
+
+.tco-stat-label {
+  display: block;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tco-stat-value {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+}
+
+.tco-stat-value.capex {
+  color: var(--success);
+}
+
+.tco-stat-value.opex {
+  color: #f59e0b;
+}
+
+.tco-stat-value.warning {
+  color: var(--error);
+}
+
+.tco-stat-value.good {
+  color: var(--success);
+}
+
+.tco-stat-note {
+  display: block;
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+.capex-opex-note {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-glass);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.capex-opex-note strong {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .capex-opex-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
