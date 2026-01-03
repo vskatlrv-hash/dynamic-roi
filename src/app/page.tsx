@@ -150,7 +150,17 @@ export default function Home() {
         />
 
         <div style={{ marginTop: '1.5rem' }}>
-          <PDFButton roi={calculations.currentRoi} savings={calculations.netSavings} />
+          <PDFButton
+            roi={calculations.currentRoi}
+            savings={calculations.netSavings}
+            generalStaffBenefit={calculations.generalStaffBenefit}
+            specialistBenefit={calculations.specialistBenefit}
+            errorReductionSavings={calculations.errorReductionSavings}
+            cloudscaleCost={calculations.cloudscaleCost}
+            paybackMonths={calculations.paybackMonths}
+            totalEmployees={calculations.totalEmployees}
+            efficiencyMode={efficiencyMode}
+          />
         </div>
       </aside>
 
