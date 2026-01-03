@@ -153,8 +153,8 @@ export default function AdvancedResults({
                     </div>
                     <div className="tier-benefit-row error">
                         <div className="tier-info">
-                            <span className="tier-badge error">Bonus</span>
-                            <span className="tier-name">Error Reduction</span>
+                            <span className="tier-badge error">Savings</span>
+                            <span className="tier-name">Error Elimination</span>
                         </div>
                         <div className="tier-value">{formatCurrency(errorReductionSavings)}</div>
                     </div>

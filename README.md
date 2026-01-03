@@ -1,129 +1,96 @@
-# 📊 Strategic ROI Calculator
+# Strategic Analysis: CloudScale Automate ROI Calculator
 
-A sophisticated, tiered ROI calculator built with Next.js that models workforce performance using **Power Law distribution** rather than simple averages. Designed for CloudScale Automate SaaS sales engineers.
+> **"The logic of averages is not just 'imprecise'; it can be directionally incorrect."**
+
+This project is a reference implementation of a **Tiered Weighted Model** for ROI calculation, designed to address the statistical fallacies inherent in simple average-based modeling for knowledge work.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
-![Recharts](https://img.shields.io/badge/Recharts-2.15-22b5bf?style=flat-square)
+![Statistical Model](https://img.shields.io/badge/Model-Power%20Law-purple?style=flat-square)
 
-## ✨ Why This Calculator is Different
+## 1. Executive Summary
 
-Traditional ROI calculators use **simple averages**, which fail to capture the reality of knowledge work:
+This tool challenges the industry standard of using simple averages (e.g., "Average Hourly Wage") for ROI calculations. Research by O’Boyle and Aguinis (2012) indicates that knowledge work follows a **Power Law (Pareto) distribution**, not a Normal distribution. In a team of 50, a simplified average hides the exponential value created by "hyper-performers" and the specific value of deep focus time.
 
-| Approach | Problem |
-|----------|---------|
-| Simple Average | Assumes all employees are identical—a statistical fallacy |
-| This Calculator | Uses **tiered segmentation** to model the Power Law distribution of human performance |
+This calculator implements a **Hybrid Stratified Model** that:
+1.  **Segments the Workforce:** Separates General Staff from Specialists.
+2.  **Applies Utility Factors:** Differentiates between Cost Avoidance (0.5x) and Opportunity Creation (1.2x).
+3.  **Visualizes Uncertainty:** Outputs a Confidence Range rather than a single static number.
 
-**Research shows:** In 94% of organizations, individual performance follows a Paretian (Power Law) distribution, not a Bell Curve. Simple averages can underestimate specialist impact by **up to 75%**.
+## 2. The Statistical Problem: "The Flaw of Averages"
 
-## 🚀 Features
+When a calculator uses a single input for "Average Employee Cost" across a diverse 50-person team, it implicitly assumes that human capital is a fungible asset with uniform output.
 
-### Tiered Workforce Model
-- **Tier 1: General Staff** - Standard tasks, cost avoidance focus (×0.5 utility)
-- **Tier 2: Specialists** - Complex tasks, opportunity value creation (×1.2 utility)
+**The Reality:**
+If the 5 high-saving employees are senior architects ($200/hr) saving 4 hours, and 45 are juniors ($50/hr) saving 0 hours:
+- **Actual Savings:** $4,000/day
+- **Average Model:** $1,000/day (Calculated as 50 employees × 0.4 avg hours × $50 avg wage)
 
-### Efficiency Capture Rates
-- **Conservative (50%)** - Accounts for heavy context switching
-- **Moderate (75%)** - Balanced realistic estimate
-- **Aggressive (100%)** - Maximum productivity assumption
+*The simple average model underestimates ROI by 75% in this scenario.*
 
-### Confidence Range Output
-Results displayed as a **range** (Conservative → Aggressive) rather than a single number, reflecting real-world uncertainty.
+## 3. Methodological Solution
 
-### Payback Period Visualization
-See exactly when your investment breaks even with an interactive 12-month timeline.
+This project implements the following mathematical framework to resolve the conflict between statistical rigor and user cognitive load.
 
-## 📐 Mathematical Model
+### 3.1 The Weighted Average Formula
 
-### The Tiered Weighted Formula
+Instead of: `(AvgTime × AvgWage × N) - Cost`
 
-```
-Total Benefit = Σ(Nᵢ × Cᵢ × ΔTᵢ × Uᵢ × E)
+We use:
+
+```math
+Total Benefit = \sum_{i=1}^{k} (N_i \times W_i \times \Delta T \times U_i \times E)
 ```
 
 Where:
-- `Nᵢ` = Headcount in tier i
-- `Cᵢ` = Fully loaded hourly cost for tier i
-- `ΔTᵢ` = Annual hours saved per employee in tier i
-- `Uᵢ` = Utility factor (0.5 for general, 1.2 for specialists)
-- `E` = Efficiency capture rate (0.5, 0.75, or 1.0)
+- **$N_i$**: Count of employees in Tier i.
+- **$W_i$**: Fully Loaded Cost (Salary + Benefits + Overhead, typically 1.25x-1.4x base).
+- **$\Delta T$**: Time Saved.
+- **$U_i$**: **Utility Factor**.
+    - *General Staff ($U=0.5$)*: Time saved is cost avoidance.
+    - *Specialists ($U=1.2$)*: Time saved creates new value (Opportunity Cost).
+- **$E$**: **Efficiency Capture Rate** (The % of saved time that actually converts to work).
 
-### ROI Calculation
+### 3.2 Efficiency Capture & Context Switching
 
-```
-ROI = (Total Benefit - Investment) ÷ Investment × 100
-```
+Research in cognitive psychology indicates that after an interruption, it takes an average of **23 minutes** to return to the original task.
 
-### Investment Formula
+This calculator addresses the "Context Switching Penalty" by allowing users to toggle "Efficiency Modes":
+- **Conservative (50%)**: assumes high friction.
+- **Moderate (75%)**: standard efficiency.
+- **Aggressive (100%)**: total efficiency capture.
 
-```
-CloudScale Cost = $10,000 (base) + $50 × Total Employees
-```
+## 4. Features & Implementation
 
-### Payback Period
+### 🏛️ Tiered Architecture
+The UI facilitates segmentation without overwhelming the user (Progessive Disclosure):
+- **Tier 1 (General Staff)**: The "Useful Many" (80%). Standard tasks.
+- **Tier 2 (Specialists)**: The "Vital Few" (20%). High focus value.
 
-```
-Payback Months = Investment ÷ Monthly Net Savings
-```
+### 📊 Confidence Range Visualization
+Accounts for uncertainty in sales forecasting.
+- "Your ROI is likely between **X% (Conservative)** and **Y% (Aggressive)**."
+- Builds trust by acknowledging variability.
 
-## 🛠️ Tech Stack
+### ⏱️ Payback Period Timeline
+Calculates the exact break-even month:
+`Payback Months = Initial Investment / Monthly Net Savings`
 
-- **Framework**: Next.js 16 with App Router
-- **Language**: TypeScript
-- **Charts**: Recharts
-- **Notifications**: React Hot Toast
-- **Styling**: Vanilla CSS with CSS Variables
-
-## 📁 Project Structure
-
-```
-dynamic-roi/
-├── src/
-│   ├── app/
-│   │   ├── globals.css         # Premium dark theme (900+ lines)
-│   │   ├── layout.tsx          # Root layout with toast provider
-│   │   └── page.tsx            # Main calculator with tiered logic
-│   └── components/
-│       ├── TieredInputs.tsx    # 2-tier workforce input sliders
-│       ├── AdvancedResults.tsx # Confidence range & payback display
-│       ├── ROIChart.tsx        # 3-year comparison chart
-│       └── PDFButton.tsx       # Business case generator
-├── package.json
-└── README.md
-```
-
-## 🚀 Quick Start
+## 5. Getting Started
 
 ```bash
-# Clone the repository
 git clone https://github.com/vskatlrv-hash/dynamic-roi.git
 cd dynamic-roi
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## 6. Legal Disclaimer
 
-## 📚 Methodology References
-
-This calculator is based on research including:
-- O'Boyle & Aguinis (2012): Power Law distribution in human performance
-- Cognitive Load Theory: Balancing accuracy vs. usability
-- The "Flaw of Averages": Why plans based on averages fail
-
-## ⚖️ Legal Disclaimer
-
-> The results provided by this calculator are estimates based on the information you provide and industry benchmarks. Actual results may vary based on your specific business environment, implementation quality, and adoption rates. This tool is provided for educational and planning purposes only.
-
-## 📄 License
-
-MIT License - feel free to use this for your own projects!
+> **Disclaimer:** The results provided by this calculator are estimates based on the information you provided and industry averages. Actual results may vary based on your specific business environment and implementation. This tool is provided for educational purposes only.
 
 ---
 
-Built with ❤️ for Sales Engineers who understand the difference between statistical accuracy and usability.
+**References:**
+1. O’Boyle, E., & Aguinis, H. (2012). The best and the rest: Revisiting the norm of normality of individual performance.
+2. Savage, S. L. (2009). The Flaw of Averages.

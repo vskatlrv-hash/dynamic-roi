@@ -184,48 +184,48 @@ export default function Home() {
         />
 
         <div className="card methodology-card">
-          <h3 className="section-title">Methodology: Tiered Weighted Model</h3>
-          <div className="formula-grid">
-            <div className="formula-item">
-              <div className="formula-header">
-                <span className="formula-icon">📊</span>
-                <strong>Total Benefit</strong>
-              </div>
-              <code className="formula">Σ(Nᵢ × Cᵢ × ΔTᵢ × Uᵢ × E)</code>
-              <p className="formula-desc">
-                Where N=headcount, C=fully loaded cost, ΔT=time saved, U=utility factor, E=efficiency
-              </p>
-            </div>
-            <div className="formula-item">
-              <div className="formula-header">
-                <span className="formula-icon">🎯</span>
-                <strong>Utility Factors</strong>
-              </div>
-              <div className="utility-breakdown">
-                <span className="utility-row"><span className="tier-badge general">Tier 1</span> U = 0.5 (cost avoidance)</span>
-                <span className="utility-row"><span className="tier-badge specialist">Tier 2</span> U = 1.2 (opportunity value)</span>
-              </div>
-            </div>
-            <div className="formula-item">
-              <div className="formula-header">
-                <span className="formula-icon">💰</span>
-                <strong>Investment</strong>
-              </div>
-              <code className="formula">$10,000 + ($50 × Total Employees)</code>
-            </div>
-            <div className="formula-item">
-              <div className="formula-header">
-                <span className="formula-icon">📈</span>
-                <strong>ROI</strong>
-              </div>
-              <code className="formula">(Total Benefit - Investment) ÷ Investment × 100</code>
-            </div>
+          <div className="methodology-header">
+            <h3 className="section-title">Methodology: Strategic Analysis</h3>
+            <span className="badge-research">Based on O’Boyle & Aguinis (2012)</span>
           </div>
 
-          <div className="methodology-note">
-            <strong>Why Tiered?</strong> Research shows knowledge worker performance follows a Power Law distribution,
-            not a Bell Curve. Simple averages underestimate specialist impact by up to 75%.
-            This model captures the disproportionate value created by your high-performers.
+          <div className="methodology-content">
+            <div className="concept-block">
+              <h4>1. The "Flaw of Averages"</h4>
+              <p>
+                Traditional ROI calculators assume a <strong>Normal Distribution</strong> (Bell Curve) where every employee is "average."
+                However, knowledge work follows a <strong>Power Law (Pareto) Distribution</strong>.
+                Using simple averages creates a "phantom number" that exists nowhere in reality.
+                This model segments your workforce to capture the disproportionate value created by your "vital few" high-performers.
+              </p>
+            </div>
+
+            <div className="concept-block">
+              <h4>2. Utility Factor Logic (U)</h4>
+              <div className="comparison-grid">
+                <div className="comparison-item tier-1">
+                  <strong>Tier 1: General Staff (U=0.5)</strong>
+                  <p>Benefits are modeled as <em>Cost Avoidance</em>. If a junior employee saves 1 hour, the business saves the cost of that hour, but rarely gains new revenue.</p>
+                </div>
+                <div className="comparison-item tier-2">
+                  <strong>Tier 2: Specialists (U=1.2)</strong>
+                  <p>Benefits are modeled as <em>Opportunity Value</em>. Freeing up a Senior Architect or Lead Developer creates value exceeding their hourly wage (e.g., faster time-to-market).</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="concept-block">
+              <h4>3. The Context Switching Penalty</h4>
+              <p>
+                Cognitive psychology research shows it takes <strong>~23 minutes</strong> to recover focus after an interruption.
+                The <strong>Efficiency Capture Rate</strong> in this model accounts for this.
+                Saving 10 minutes of "fragmented time" has near-zero value, while saving 10 minutes of "deep work" block time has exponential value.
+              </p>
+            </div>
+
+            <div className="formula-display">
+              <code>Total Benefit = Σ(Nᵢ × Cᵢ × ΔTᵢ × Uᵢ × E)</code>
+            </div>
           </div>
         </div>
       </main>

@@ -217,9 +217,12 @@ export default function TieredInputs({
 
                 <div className="slider-container">
                     <div className="slider-label">
-                        <span>Data Entry Error Rate</span>
+                        <span>Current Error Rate (Eliminated by Tool)</span>
                         <span className="slider-value error">{errorRate}%</span>
                     </div>
+                    <p className="slider-sublabel" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                        Higher errors = higher potential savings when eliminated.
+                    </p>
                     <input
                         type="range"
                         min="1"
